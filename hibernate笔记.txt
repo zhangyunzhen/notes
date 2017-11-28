@@ -1,0 +1,21 @@
+hibernate相关环境配置：
+1.引入相关jar包。
+2.创建ORM（对象关系映射）文件   ***.hbm.xml
+3.创建主配置文件  hibernate.cfg.xml
+
+
+
+
+调用方式：
+
+读取主配置文件
+Configuration configurtion = new Configuration()；
+configuration.configure("hibernate.cfg.xml")；
+
+获取sessionFactory对象
+ServiceRegistry sr = new ServiceRegistryBuilder().applySettings(
+					configuration.getProperties()).buildServiceRegistry();
+SessionFactory sessionFactory = configuration.buildSessionFactory(sr);
+
+获取session
+Session session = sessionFactory().openSession();

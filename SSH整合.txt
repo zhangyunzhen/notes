@@ -1,0 +1,35 @@
+Spring整合Struts2
+
+配置环境：1.配置导入必要的jar包(包括Spring和struts2的必须包和额外包)
+		struts2-spring-pliugin-2.0.11.2.jar --struts对spring的集成包
+	  2.配置web.xml（①为strust2配置一个FilterDispatcher ②为Spring配置一个listener）
+	  3.修改Struts2的Action类
+	  4.修改struts.properties文件（指定Struts2的对象工厂是Spring框架的Ioc容器，也可以在struts.xml中进行配置）
+	  5.修改struts.xml文件（修改action标签的class属性，需与applicationContext.xml
+				中的Action的bean对应的id一致，默认使用去掉包名的类名）
+	  6.修改aplicationContext.xml文件
+
+注意：1.struts2没有spring的情况下加了struts2-spring-plugin-2.3.24.1.jar会导致错误
+2.struts2-spring-pliugin-2.0.11.2.jar和
+3.在applicationContext.xml中配置Action实例化时必须制定scope="prototype"
+
+
+
+
+
+
+Spring整合hibernate
+
+核心：	1.获得SessionFactory工厂对象
+	2.使用HibernateTemplate类
+
+
+配置步骤：1.导入Spring的jar包,hibernate的jar包和相关的额外包。
+	2.写bean获取sessionFactory工厂对象
+	3.可写bean获得hibernateTemplate实例
+
+
+
+
+注意：1.额外包有：spring-orm-4.2.5.RELEASE.jar
+      2.一定要注意导完整的包！！否则会报错

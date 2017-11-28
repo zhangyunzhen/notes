@@ -1,0 +1,120 @@
+核心技术：IoC（控制反转）和AOP(面向切面编程)
+
+Ioc的好处：不需要硬编码，修改时只需修改配置文件。
+
+环境搭建：
+	1.导入相关jar包
+	2.配置applicationContext.xml.
+
+
+applicationContext.xml配置文件：
+	<头文件信息>
+	<beans>
+(引用其他配置文件)<import resource="/applicationContext1.xml"  />
+		<bean id="" class="" scope="" >
+			(setter注入)<property name="" value=""></property>
+		       （构造器注入）<constrctor-arg index="">
+					<value></value>     
+				     </constructor-arg>
+			(bean类型属性配置)<property name="">
+						<ref bean="" />
+					  </property>
+			（集合类型属性配置）<property name="">
+					    	<list>
+							<ref bean="" />
+							<ref bean="" />
+						</list>
+					    </peoperty>	
+		</bean>
+	</beans>
+
+
+使用注解配置spring组件：
+
+配置文件中需添加：
+<context:component-scan base-package="com..."></context:component-scan>
+
+(语义上区分)@Component 基本注解，标识了一个受spring管理的组件
+	@Repository 用于标注标注数据访问组件，即DAO组件
+	@Service  用于标注业务层组件
+	@Controller 用于标注控制层组件（如struts2中的Action）
+
+
+注解注入：直接在属性上完成 不依赖setter方法
+	@Value(value="")
+	@Resource(name="")
+
+得到bean实例：
+(ApplicationContext是BeanFactory的子接口)
+ApplicationContext ctxt = new ClassPathXmlApplicationContext("applicationContext.xml");
+Person person = (Person)ctxt.getBean("Person");
+
+注意：实例中的属性传递方法需要依靠setter注入。而注解方式不用setter注入
+
+
+
+AOP:
+
+应用：许多模块可能实现相同的功能，将相同的功能设置为“切面”。AOP将
+通用功能与业务模块分离。
+
+
+
+环境搭建：1.引入相关jar包
+	  2.配置文件头信息
+
+
+applicationContex.xml文件配置：
+	<!--配置头文件-->
+	<!--实例化切面 省略-->
+	<aop:config>
+		<aop:pointcut id="" expression="" />
+		<aop:aspect ref="">
+			<aop:before method="" point-ref="" />
+		</aop:aspect>
+	</aop:config>
+	
+切入点表达式：关键字有（whthin bean execution）
+
+核心组件：1.切面（要植入的程序代码）
+	  2.切入点（被植入代码的函数）
+	  3.通知（植入函数的哪个位置，之前，之后，或其他）
+
+
+步骤：1.确定切入点程序
+      2.实现切面程序
+      3.通过配置文件将切面程序插入到切入点程序的某个位置（通知）
+
+实现：确定切点位置，写一个切面类（相同功能模块），最后在配置文件中配置。
+
+
+注意：切面程中 注意JoinPoint的使用 ，不是Joinpoint!! 
+
+AOP的注解配置：
+需在applicationContext.xml中添加：
+<aop:aspectj-autoproxy ></aop:aspectj-autoproxy>
+
+
+
+
+Spring中的事务管理：
+核心接口：PlatformTransactionManager
+两种事务管理模式：编程式事务管理和声明式事务管理
+
+编程式事务管理：实现方式：
+	（1）使用TransactionTemplate类。
+		①在相关Service类中声明PlateformTransactionManager类型属性，并提供setter方法。
+		②在applicationContext.xml中配置事务管理器实例，并注入到相关Service类实例中。
+		③在相关Service类的相关方法中创建TransactionTemplate对象
+		④调用该对象的execute方法执行一个事务中的相关代码，实现TransactionCallback接口（通过匿名内部类方式获得）
+
+	（2）实现PlateformTransactionMannager接口
+声明式事务管理：
+（两种实现方式：xml方式和注解方式）
+	核心：AOP    粗粒度事务（只能给某个方法增加事务，不能给方法内的某几行增加事务）
+	①在ApplicationContext.xml中配置事务管理器实例
+	如配置HibernateTransactionManager事务管理器实例：
+		<bean id="txManager" class="org.springframework...">
+			<property name="sessionFactory" ref="sessionFactory"></property>
+		</bean>	
+	②装配TransactionProxyFactoryBean

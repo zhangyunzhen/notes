@@ -1,0 +1,34 @@
+最大改变：MVC中的控制器部分
+
+Struts2控制器包括过滤器、拦截器、Action
+
+环境搭建（3步）：
+	1.复制jar包到项目中
+	2.配置web.xml
+	3.配置struts.xml
+	4.编写Action
+
+struts.xml配置文件:
+	<struts>
+		<constant name="" value="" />
+		<package>
+			<interceptors>
+				<interceptor name="" class=""></interceptor>
+			</interceptors>
+			<action name="" class="" method="">
+				<interceptor-ref name=""></interceptor-ref>
+				<result name="" type=""></result>
+			</action>
+		</package>
+	</struts>
+
+
+Action:
+	不同调用方式：（1）struts.xml中通过method属性指定方法名
+		      （2）动态方法调用方式（DMI） --jsp页面提交表单的action=“ActionName!方法名”
+		      （3）使用提交按钮的method属性
+		      （4）使用通配符配置Action
+
+	调用请求参数：（两种方式都依赖拦截器）
+		      （1）FIield-Driven方式：必须在Action类中声明与请求参数相同名称的参数。
+		      （2）Model-Driven方式：getModel返回的类对象中必须与请求参数一一对应，并有相应的getters和setters.
